@@ -12,7 +12,8 @@ st.write(
 name_on_order = st.text_input('Enter Your Name')
 st.write('The name on the smoothie will be : ', name_on_order)
 
-session = get_active_session()
+cnx = st.connection("Snowflake")
+session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 
 ingredients_list = st.multiselect(
@@ -38,6 +39,3 @@ if ingredients_list:
         session.sql(my_insert_stmt).collect()
 
         st.success("Your smoothie is ordered ! ")
-
-cnx = st.connection("Snowflake")
-session = cnx.session()
